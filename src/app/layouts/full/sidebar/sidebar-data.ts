@@ -10,67 +10,59 @@ export const navItems: NavItem[] = [
     route: '/dashboard',
   },
   {
-    navCap: 'Ui Components',
+    navCap: 'Patients',
   },
   {
-    displayName: 'Badge',
-    iconName: 'archive',
-    route: '/ui-components/badge',
-  },
-  {
-    displayName: 'Chips',
-    iconName: 'info-circle',
-    route: '/ui-components/chips',
-  },
-  {
-    displayName: 'Lists',
-    iconName: 'list-details',
-    route: '/ui-components/lists',
-  },
-  {
-    displayName: 'Menu',
+    displayName: 'Records',
     iconName: 'file-text',
-    route: '/ui-components/menu',
-  },
-  {
-    displayName: 'Tooltips',
-    iconName: 'file-text-ai',
-    route: '/ui-components/tooltips',
-  },
-  {
-    displayName: 'Forms',
-    iconName: 'clipboard-text',
-    route: '/ui-components/forms',
-  },
-  {
-    displayName: 'Tables',
-    iconName: 'table',
     route: '/ui-components/tables',
   },
   {
-    navCap: 'Auth',
+    displayName: 'Appointments',
+    iconName: 'calendar-event',
+    route: '/ui-components/chips',
   },
   {
-    displayName: 'Login',
-    iconName: 'login',
+    displayName: 'Treatment Plans',
+    iconName: 'report-medical',
+    route: '/ui-components/lists',
+  },
+  {
+    displayName: 'Billing & Payments',
+    iconName: 'receipt-euro',
+    route: '/ui-components/menu',
+  },
+  {
+    navCap: 'CLINICAL',
+  },
+  {
+    displayName: 'Treatments',
+    iconName: 'file-text',
     route: '/authentication/login',
   },
   {
-    displayName: 'Register',
-    iconName: 'user-plus',
+    displayName: 'Inventory',
+    iconName: 'file-text',
     route: '/authentication/register',
   },
   {
-    navCap: 'Extra',
+    navCap: 'Staff',
   },
   {
-    displayName: 'Icons',
-    iconName: 'mood-smile',
+    displayName: 'Staff Directory',
+    iconName: 'users',
+    route: '/ui-components/tables',
+  },
+  {
+    displayName: 'Schedules',
+    iconName: 'calendar-user',
     route: '/extra/icons',
+    // route: '/extra/sample-page',
   },
   {
-    displayName: 'Sample Page',
-    iconName: 'brand-dribbble',
-    route: '/extra/sample-page',
+    displayName: 'Roles & Permissions',
+    iconName: 'file-text',
+    route: '/extra/icons',
+    // route: '/extra/sample-page',
   },
 ];

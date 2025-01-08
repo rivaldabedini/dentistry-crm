@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MaterialModule } from 'src/app/material.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginator } from '@angular/material/paginator';
 
 // table 1
 export interface productsData {
@@ -14,6 +22,13 @@ export interface productsData {
   uname: string;
   budget: number;
   priority: string;
+}
+
+export interface ColumnDefinition {
+  key: string; // Property name in the data
+  header: string; // Header text for the column
+  cellClass?: string; // Optional custom class for cells
+  template?: any; // TemplateRef for rendering custom content
 }
 
 const PRODUCT_DATA: productsData[] = [
@@ -60,9 +75,59 @@ const PRODUCT_DATA: productsData[] = [
     MatButtonModule,
   ],
   templateUrl: './tables.component.html',
+  styleUrls: ['./tables.component.scss'],
 })
-export class AppTablesComponent {
-  // table 1
-  displayedColumns1: string[] = ['assigned', 'name', 'priority', 'budget'];
-  dataSource1 = PRODUCT_DATA;
+export class AppTablesComponent implements OnInit {
+  @Input() title: string = '';
+  @Input() dataSource: any[] = [];
+  @Input() columns: {
+    key: string;
+    label: string;
+    headerClass?: string;
+    cellClass?: string;
+    cellTemplate?: any;
+  }[] = [];
+  @Input() actions: { key: string; label: string; icon: string }[] = []; // Dynamic actions with keys, labels, and icons
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @Output() action = new EventEmitter<{ action: string; row: any }>();
+
+  filteredDataSource: MatTableDataSource<any>;
+  isSearchActive: boolean = false;
+
+  constructor() {
+    // this.filteredDataSource = this.dataSource;
+  }
+  ngOnInit(): void {
+    this.filteredDataSource = new MatTableDataSource(this.dataSource);
+  }
+  ngAfterViewInit(): void {
+    this.filteredDataSource.paginator = this.paginator; // Bind paginator to data source
+  }
+
+  // Toggle search input visibility
+  toggleSearch(): void {
+    this.isSearchActive = true;
+  }
+
+  // Close search input
+  closeSearch(): void {
+    this.isSearchActive = false;
+    this.filteredDataSource.filter = ''; // Reset filtered data
+  }
+
+  // Real-time search
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+
+    this.filteredDataSource.filter = inputElement.value.trim().toLowerCase();
+  }
+  // Trigger any action with its key and row data
+  onAction(action: string, row: any): void {
+    this.action.emit({ action, row });
+  }
+
+  // Include the "actions" column dynamically
+  getColumnKeys(): string[] {
+    return [...this.columns.map((c) => c.key), 'actions'];
+  }
 }

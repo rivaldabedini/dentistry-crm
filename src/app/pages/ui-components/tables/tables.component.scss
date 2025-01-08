@@ -1,0 +1,26 @@
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Adds spacing between the search and add button */
+  }
+  
+//   .search-bar {
+//     width: 300px;
+//   }
+  
+  .add-button {
+    margin-left: auto;
+  }
+  

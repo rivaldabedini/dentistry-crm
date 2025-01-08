@@ -15,7 +15,7 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Records',
     iconName: 'file-text',
-    route: '/ui-components/tables',
+    route: '/ui-components/patient-records',
   },
   {
     displayName: 'Appointments',

@@ -1,60 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MaterialModule } from 'src/app/material.module';
-import { AppTablesComponent, ColumnDefinition } from '../tables/tables.component';
-
-export interface productsData {
-  id: number;
-  imagePath: string;
-  uname: string;
-  budget: number;
-  priority: string;
-}
-
-
-const PRODUCT_DATA: productsData[] = [
-  {
-    id: 1,
-    imagePath: 'assets/images/profile/user-1.jpg',
-    uname: 'iPhone 13 pro max-Pacific Blue-128GB storage',
-    budget: 180,
-    priority: 'confirmed',
-  },
-  {
-    id: 2,
-    imagePath: 'assets/images/profile/user-2.jpg',
-    uname: 'Apple MacBook Pro 13 inch-M1-8/256GB-space',
-    budget: 90,
-    priority: 'cancelled',
-  },
-  {
-    id: 3,
-    imagePath: 'assets/images/profile/user-3.jpg',
-    uname: 'PlayStation 5 DualSense Wireless Controller',
-    budget: 120,
-    priority: 'rejected',
-  },
-  {
-    id: 4,
-    imagePath: 'assets/images/profile/user-4.jpg',
-    uname: 'Amazon Basics Mesh, Mid-Back, Swivel Office',
-    budget: 160,
-    priority: 'confirmed',
-  },
-];
-
+import {
+  AppTablesComponent,
+  ColumnDefinition,
+} from '../tables/tables.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'app-patient-records',
   standalone: true,
-  imports: [CommonModule, MaterialModule,AppTablesComponent],
+  imports: [CommonModule, MaterialModule, AppTablesComponent],
   templateUrl: './patient-records.component.html',
   styleUrl: './patient-records.component.scss',
 })
 export class PatientRecordsComponent implements OnInit {
-
-  ngOnInit() {
-  }
+  constructor(public dialog: MatDialog) {}
+  ngOnInit() {}
 
   patients = [
     {
@@ -103,7 +66,7 @@ export class PatientRecordsComponent implements OnInit {
   onTableAction(event: { action: string; row: any }): void {
     const { action, row } = event;
     if (action === 'add') {
-      this.addPatient();
+      this.openAddPatientModal();
     } else if (action === 'edit') {
       this.editPatient(row);
     } else if (action === 'delete') {
@@ -112,7 +75,6 @@ export class PatientRecordsComponent implements OnInit {
   }
   addPatient(): void {
     console.log('Adding patient');
-
   }
 
   editPatient(patient: any): void {
@@ -123,5 +85,91 @@ export class PatientRecordsComponent implements OnInit {
   deletePatient(patient: any): void {
     console.log('Deleting patient:', patient);
     // Add logic to confirm and delete the patient
+  }
+  formConfig = {
+    title: 'Dynamic Form Example',
+    fields: [
+      {
+        name: 'firstName',
+        label: 'First Name',
+        type: 'text',
+        placeholder: 'Enter first name',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'email',
+        label: 'Email',
+        type: 'email',
+        placeholder: 'Enter your email',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        placeholder: 'Enter password',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'age',
+        label: 'Age',
+        type: 'number',
+        placeholder: 'Enter your age',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'birthDate',
+        label: 'Date of Birth',
+        type: 'date',
+        placeholder: 'Select your birth date',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'gender',
+        label: 'Gender',
+        type: 'radio',
+        options: [
+          { value: 'Male', viewValue: 'Male' },
+          { value: 'Female', viewValue: 'Female' },
+          { value: 'Other', viewValue: 'Other' },
+        ],
+        class: 'col-lg-6',
+      },
+      {
+        name: 'country',
+        label: 'Country',
+        type: 'select',
+        options: [
+          { value: 'us', viewValue: 'United States' },
+          { value: 'in', viewValue: 'India' },
+          { value: 'uk', viewValue: 'United Kingdom' },
+        ],
+        class: 'col-lg-6',
+      },
+      {
+        name: 'hobbies',
+        label: 'Hobbies',
+        type: 'checkbox',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'comments',
+        label: 'Additional Comments',
+        type: 'textarea',
+        placeholder: 'Enter your comments here',
+        class: 'col-lg-12',
+      },
+    ],
+  };
+  openAddPatientModal(): void {
+    const dialogRef = this.dialog.open(DynamicFormComponent, {
+      width: '800px',
+      data: { formConfig: this.formConfig },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
   }
 }

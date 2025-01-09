@@ -1,0 +1,73 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header class="d-flex justify-content-between align-items-center">
+        <!-- Card Title -->
+        <mat-card-title>{{ formConfig.title }}</mat-card-title>
+      
+        <!-- Close Icon Button -->
+        <button mat-icon-button (click)="onDialogClose()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      
+    <mat-card-content>
+      <form [formGroup]="formGroup">
+        <div class="row">
+          <div *ngFor="let field of formConfig.fields" [ngClass]="field.class || 'col-lg-6'">
+            <mat-label class="f-w-600 m-b-8 d-block">{{ field.label }}</mat-label>
+            <mat-form-field *ngIf="field.type !== 'checkbox' && field.type !== 'radio' && field.type !== 'textarea'" 
+                            appearance="outline" class="w-100 mat-field-compact" [color]="field.color || 'primary'">
+              <ng-container [ngSwitch]="field.type">
+                <!-- Text Input -->
+                <input *ngSwitchCase="'text'" matInput [placeholder]="field.placeholder" formControlName="{{ field.name }}" />
+                <!-- Email Input -->
+                <input *ngSwitchCase="'email'" matInput type="email" [placeholder]="field.placeholder" formControlName="{{ field.name }}" />
+                <!-- Password Input -->
+                <input *ngSwitchCase="'password'" matInput type="password" [placeholder]="field.placeholder" formControlName="{{ field.name }}" />
+                <!-- Number Input -->
+                <input *ngSwitchCase="'number'" matInput type="number" [placeholder]="field.placeholder" formControlName="{{ field.name }}" />
+                <!-- Date Picker -->
+                <div *ngSwitchCase="'date'" class="d-flex align-items-center p-0">
+                    <input matInput [matDatepicker]="picker" formControlName="{{ field.name }}" [placeholder]="field.placeholder" 
+                            (focus)="picker.open()" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
+
+                <!-- Select Dropdown -->
+                <mat-select *ngSwitchCase="'select'" formControlName="{{ field.name }}">
+                  <mat-option *ngFor="let option of field.options" [value]="option.value">
+                    {{ option.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </ng-container>
+            </mat-form-field>
+  
+            <!-- Textarea Field -->
+            <mat-form-field *ngIf="field.type === 'textarea'" appearance="outline" class="w-100">
+              <textarea matInput [placeholder]="field.placeholder" formControlName="{{ field.name }}" rows="3"></textarea>
+            </mat-form-field>
+  
+            <!-- Checkbox Field -->
+            <div *ngIf="field.type === 'checkbox'" class="m-t-16">
+              <mat-checkbox formControlName="{{ field.name }}">{{ field.label }}</mat-checkbox>
+            </div>
+  
+            <!-- Radio Button Field -->
+            <div *ngIf="field.type === 'radio'" class="m-t-16">
+              <mat-radio-group formControlName="{{ field.name }}">
+                <mat-radio-button *ngFor="let option of field.options" [value]="option.value">
+                  {{ option.viewValue }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+  
+        <div class="m-t-12">
+          <button mat-flat-button color="primary" class="m-r-8" type="button" (click)="onSubmit()">Submit</button>
+          <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Reset</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  

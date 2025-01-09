@@ -7,6 +7,7 @@ import {
 } from '../tables/tables.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-patient-records',
@@ -24,23 +25,23 @@ export class PatientRecordsComponent implements OnInit {
       patientId: 1,
       firstName: 'John',
       lastName: 'Doe',
-      dateOfBirth: new Date(1990, 5, 15).toUTCString(),
+      dateOfBirth: format(new Date(1985, 8, 24), 'yyyy-MM-dd'),
       gender: 'Male',
       email: 'john.doe@example.com',
       phone: '123-456-7890',
       address: '123 Main St, Springfield',
-      dateCreated: new Date(),
+      dateCreated: format(new Date(), 'yyyy-MM-dd'),
     },
     {
       patientId: 2,
       firstName: 'Jane',
       lastName: 'Smith',
-      dateOfBirth: new Date(1985, 8, 24),
+      dateOfBirth: format(new Date(1985, 8, 24), 'yyyy-MM-dd'),
       gender: 'Female',
       email: 'jane.smith@example.com',
       phone: '987-654-3210',
       address: '456 Elm St, Shelbyville',
-      dateCreated: new Date(),
+      dateCreated: format(new Date(), 'yyyy-MM-dd'),
     },
   ];
 

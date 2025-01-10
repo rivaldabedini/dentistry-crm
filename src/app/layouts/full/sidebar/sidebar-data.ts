@@ -20,7 +20,7 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Appointments',
     iconName: 'calendar-event',
-    route: '/ui-components/chips',
+    route: '/ui-components/schedule-appointment',
   },
   {
     displayName: 'Treatment Plans',

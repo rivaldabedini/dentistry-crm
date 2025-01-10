@@ -9,6 +9,7 @@ import { AppTooltipsComponent } from './tooltips/tooltips.component';
 import { AppFormsComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
 import { PatientRecordsComponent } from './patient-records/patient-records.component';
+import { ScheduleAppointmentComponent } from './schedule-appointment/schedule-appointment.component';
 
 export const UiComponentsRoutes: Routes = [
   {
@@ -45,6 +46,10 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'patient-records',
         component: PatientRecordsComponent
+      },
+      {
+        path: 'schedule-appointment',
+        component: ScheduleAppointmentComponent
       }
     ],
   },

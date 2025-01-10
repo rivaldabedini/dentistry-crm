@@ -1,204 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
 
-
 @Component({
   selector: 'app-event-calendar',
   standalone: true,
-  imports: [CommonModule, MaterialModule, DragDropModule,],
+  imports: [CommonModule, MaterialModule, DragDropModule],
   templateUrl: './event-calendar.component.html',
-  styleUrl: './event-calendar.component.scss'
+  styleUrl: './event-calendar.component.scss',
 })
+export class EventCalendarComponent implements OnInit {
+  @Input() appointments: Appointment[] = [];
+  @Output() appointmentsChange = new EventEmitter<Appointment[]>();
+  @Output() createAppointment = new EventEmitter<Appointment>();
 
-export class EventCalendarComponent {
-  
   viewDate: Date = new Date();
   selectedDate: Date | null = null;
   selectedStartTime: string | undefined;
-  weekDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+  weekDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   monthDays: Date[] = [];
-  appointments: Appointment[] = [
-    {
-      uuid: '00000000-0000-0000-0000-000000000001',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
-      title: 'Meeting with Bob',
-      startTime: '09:00',
-      endTime: '10:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000002',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 2),
-      title: 'Lunch with Alice',
-      startTime: '12:00',
-      endTime: '13:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000003',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 3),
-      title: 'Project Deadline',
-      startTime: '15:00',
-      endTime: '16:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000004',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
-      title: 'Doctor Appointment',
-      startTime: '10:00',
-      endTime: '11:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000005',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() + 1
-      ),
-      title: 'Team Meeting',
-      startTime: '14:00',
-      endTime: '15:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000006',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
-      title: 'Coffee with Mike',
-      startTime: '11:00',
-      endTime: '12:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000007',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() + 4
-      ),
-      title: 'Client Call',
-      startTime: '09:30',
-      endTime: '10:30',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000008',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 8),
-      title: 'Gym',
-      startTime: '17:00',
-      endTime: '18:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000009',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() - 1
-      ),
-      title: 'Dentist Appointment',
-      startTime: '11:30',
-      endTime: '12:30',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000a',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() - 2
-      ),
-      title: 'Birthday Party',
-      startTime: '19:00',
-      endTime: '21:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000b',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 11),
-      title: 'Conference',
-      startTime: '13:00',
-      endTime: '14:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000c',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 12),
-      title: 'Workshop',
-      startTime: '10:00',
-      endTime: '12:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000d',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 13),
-      title: 'Brunch with Sarah',
-      startTime: '11:00',
-      endTime: '12:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000e',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() + 2
-      ),
-      title: 'Networking Event',
-      startTime: '18:00',
-      endTime: '20:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-00000000000f',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 16),
-      title: 'Yoga Class',
-      startTime: '07:00',
-      endTime: '08:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000010',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 16),
-      title: 'Strategy Meeting',
-      startTime: '10:00',
-      endTime: '11:30',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000011',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 17),
-      title: 'Call with Investor',
-      startTime: '14:00',
-      endTime: '15:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000012',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 18),
-      title: 'Team Lunch',
-      startTime: '12:00',
-      endTime: '13:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000013',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate() + 3
-      ),
-      title: 'HR Meeting',
-      startTime: '16:00',
-      endTime: '17:00',
-    },
-    {
-      uuid: '00000000-0000-0000-0000-000000000014',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), 20),
-      title: 'Board Meeting',
-      startTime: '11:00',
-      endTime: '12:00',
-    },
-  ];
+
   currentView: CalendarView = CalendarView.Month;
   timeSlots: string[] = [];
 
@@ -206,7 +30,9 @@ export class EventCalendarComponent {
 
   public CalendarView = CalendarView;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog) {}
+
+  ngOnInit(): void {
     this.appointments.forEach((appointment) => {
       appointment.color = this.getRandomColor();
     });
@@ -236,15 +62,19 @@ export class EventCalendarComponent {
     this.weeks = [];
     this.monthDays = [];
     let week: Date[] = [];
-  
+
     // Adjust for days before the first Monday of the month
-    for (let day = (start.getDay() === 0 ? 6 : start.getDay() - 1); day > 0; day--) {
+    for (
+      let day = start.getDay() === 0 ? 6 : start.getDay() - 1;
+      day > 0;
+      day--
+    ) {
       const prevDate = new Date(start);
       prevDate.setDate(start.getDate() - day);
       week.push(prevDate);
       this.monthDays.push(prevDate);
     }
-  
+
     // Fill the current month
     for (let day = 1; day <= end.getDate(); day++) {
       const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
@@ -255,7 +85,7 @@ export class EventCalendarComponent {
         week = [];
       }
     }
-  
+
     // Adjust for days after the month's end to complete the week
     for (let day = 1; week.length < 7; day++) {
       const nextDate = new Date(end);
@@ -263,12 +93,12 @@ export class EventCalendarComponent {
       week.push(nextDate);
       this.monthDays.push(nextDate);
     }
-  
+
     if (week.length > 0) {
       this.weeks.push(week);
     }
   }
-  
+
   generateWeekView(date: Date) {
     const startOfWeek = this.startOfWeek(date);
     this.monthDays = [];
@@ -302,7 +132,6 @@ export class EventCalendarComponent {
     const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Adjust to make Monday the first day
     return new Date(start.setDate(diff));
   }
-  
 
   previous() {
     if (this.currentView === 'month') {
@@ -380,31 +209,6 @@ export class EventCalendarComponent {
     // this.openDialog();
   }
 
-  generateUUID(): string {
-    let d = new Date().getTime(); //Timestamp
-    let d2 =
-      (typeof performance !== 'undefined' &&
-        performance.now &&
-        performance.now() * 1000) ||
-      0;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        let r = Math.random() * 16; //random number between 0 and 16
-        if (d > 0) {
-          //Use timestamp until depleted
-          r = (d + r) % 16 | 0;
-          d = Math.floor(d / 16);
-        } else {
-          //Use microseconds since page-load if supported
-          r = (d2 + r) % 16 | 0;
-          d2 = Math.floor(d2 / 16);
-        }
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-  }
-
   addAppointment(
     date: Date,
     title: string,
@@ -412,13 +216,13 @@ export class EventCalendarComponent {
     endTime: string
   ) {
     this.appointments.push({
-      uuid: this.generateUUID(),
       date,
       title,
       startTime,
       endTime,
       color: this.getRandomColor(),
     });
+    this.appointmentsChange.emit(this.appointments);
   }
 
   deleteAppointment(appointment: Appointment, event: Event) {
@@ -476,6 +280,7 @@ export class EventCalendarComponent {
       movedAppointment.startTime = slot;
       movedAppointment.endTime = slot;
     }
+    this.appointmentsChange.emit(this.appointments);
   }
 
   viewToday(): void {

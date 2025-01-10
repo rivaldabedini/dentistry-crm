@@ -19,7 +19,7 @@ export class EventCalendarComponent {
   viewDate: Date = new Date();
   selectedDate: Date | null = null;
   selectedStartTime: string | undefined;
-  weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
   monthDays: Date[] = [];
   appointments: Appointment[] = [
     {
@@ -236,14 +236,16 @@ export class EventCalendarComponent {
     this.weeks = [];
     this.monthDays = [];
     let week: Date[] = [];
-
-    for (let day = start.getDay(); day > 0; day--) {
+  
+    // Adjust for days before the first Monday of the month
+    for (let day = (start.getDay() === 0 ? 6 : start.getDay() - 1); day > 0; day--) {
       const prevDate = new Date(start);
       prevDate.setDate(start.getDate() - day);
       week.push(prevDate);
       this.monthDays.push(prevDate);
     }
-
+  
+    // Fill the current month
     for (let day = 1; day <= end.getDate(); day++) {
       const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
       this.monthDays.push(currentDate);
@@ -253,24 +255,20 @@ export class EventCalendarComponent {
         week = [];
       }
     }
-
-    for (let day = 1; this.monthDays.length % 7 !== 0; day++) {
-      const nextDate = new Date(end);
-      nextDate.setDate(end.getDate() + day);
-      this.monthDays.push(nextDate);
-    }
-
+  
+    // Adjust for days after the month's end to complete the week
     for (let day = 1; week.length < 7; day++) {
       const nextDate = new Date(end);
       nextDate.setDate(end.getDate() + day);
       week.push(nextDate);
+      this.monthDays.push(nextDate);
     }
-
+  
     if (week.length > 0) {
       this.weeks.push(week);
     }
   }
-
+  
   generateWeekView(date: Date) {
     const startOfWeek = this.startOfWeek(date);
     this.monthDays = [];
@@ -300,10 +298,11 @@ export class EventCalendarComponent {
 
   startOfWeek(date: Date): Date {
     const start = new Date(date);
-    const day = start.getDay();
-    const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+    const day = start.getDay(); // Get the current day (0 for Sunday, 1 for Monday, etc.)
+    const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Adjust to make Monday the first day
     return new Date(start.setDate(diff));
   }
+  
 
   previous() {
     if (this.currentView === 'month') {

@@ -2,20 +2,21 @@
   <div class="calendar-container">
     <div class="calendar-header">
       <div>
-        <h2
-          class="calendar-month"
-          *ngIf="currentView === 'month' || currentView === 'week'"
-        >
-          {{ viewDate | date: "MMMM" }}
-          <span>{{ viewDate | date: "y" }}</span>
+        @if (currentView === 'month' || currentView === 'week') {
+        <h2 class="calendar-month">
+          {{ viewDate | date : "MMMM" }}
+          <span>{{ viewDate | date : "y" }}</span>
         </h2>
-        <h2 class="calendar-month" *ngIf="currentView === 'day'">
-          {{ viewDate | date : "dd MMMM" }}
-          <span>{{ viewDate | date: "y" }}</span>
+        } @else if (currentView === 'day') {
+        <h2 class="calendar-month">
+          {{ viewDate | date : "d MMMM" }}
+          <span>{{ viewDate | date : "y" }}</span>
         </h2>
-        <span class="calendar-dayname" *ngIf="currentView === 'day'">
+        }@else if (currentView === 'day') {
+        <span class="calendar-dayname">
           {{ viewDate | date : "EEEE" }}
         </span>
+        }
       </div>
       <mat-button-toggle-group
         class="calendar-view-toggle"
@@ -35,7 +36,8 @@
       </mat-button-toggle-group>
       <div class="calendar-controls">
         <button
-          mat-icon-button type="button"
+          mat-icon-button
+          type="button"
           (click)="previous()"
           (keydown.enter)="previous()"
           (keydown.space)="previous()"
@@ -43,7 +45,9 @@
           <mat-icon>chevron_left</mat-icon>
         </button>
         <button
-        mat-stroked-button color="primary" type="button"
+          mat-stroked-button
+          color="primary"
+          type="button"
           (click)="viewToday()"
           (keydown.enter)="viewToday()"
           (keydown.space)="viewToday()"
@@ -51,7 +55,8 @@
           Today
         </button>
         <button
-          mat-icon-button type="button"
+          mat-icon-button
+          type="button"
           (click)="next()"
           (keydown.enter)="next()"
           (keydown.space)="next()"
@@ -59,7 +64,9 @@
           <mat-icon>chevron_right</mat-icon>
         </button>
         <button
-        mat-flat-button color="primary" type="button"
+          mat-flat-button
+          color="primary"
+          type="button"
           (click)="selectDate()"
           (keydown.enter)="selectDate()"
           (keydown.space)="selectDate()"
@@ -70,12 +77,12 @@
     </div>
 
     <!-- Month @start -->
+    @if (currentView === 'month') {
     <table
       width="100%"
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-month"
-      *ngIf="currentView === 'month'"
     >
       <thead>
         <tr>
@@ -127,14 +134,13 @@
       </tbody>
     </table>
     <!-- Month @end -->
-
+    } @else if(currentView === 'week'){
     <!-- Week View -->
     <table
       width="100%"
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-week"
-      *ngIf="currentView === 'week'"
     >
       <thead>
         <tr>
@@ -185,14 +191,13 @@
         </tr>
       </tbody>
     </table>
-
+    } @else if (currentView === 'day') {
     <!-- Day View -->
     <table
       width="100%"
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-day"
-      *ngIf="currentView === 'day'"
     >
       <tbody cdkDropListGroup>
         <tr *ngFor="let slot of timeSlots">
@@ -234,5 +239,6 @@
         </tr>
       </tbody>
     </table>
+    }
   </div>
 </div>

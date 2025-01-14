@@ -32,7 +32,13 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </div>
-
+                
+            <!-- time picker -->
+              <div *ngSwitchCase="'time'" class="d-flex align-items-center p-0">
+                <input matInput [ngxMatTimepicker]="timepicker" formControlName="{{ field.name }}" [placeholder]="field.placeholder" (focus)="timepicker.open()" />
+                <ngx-mat-timepicker-toggle matSuffix [for]="timepicker"></ngx-mat-timepicker-toggle>
+                <ngx-mat-timepicker #timepicker></ngx-mat-timepicker>
+              </div>
                 <!-- Select Dropdown -->
                 <mat-select *ngSwitchCase="'select'" formControlName="{{ field.name }}">
                   <mat-option *ngFor="let option of field.options" [value]="option.value">

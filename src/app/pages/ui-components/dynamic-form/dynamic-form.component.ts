@@ -3,11 +3,12 @@ import { Component, Inject, Input } from '@angular/core';
 import { MaterialModule } from 'src/app/material.module';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker'; 
 
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MaterialModule],
+  imports: [CommonModule, ReactiveFormsModule, MaterialModule,NgxMatTimepickerModule],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss',
 })
@@ -38,6 +39,7 @@ export class DynamicFormComponent {
   onSubmit() {
     if (this.formGroup.valid) {
       console.log('Form Submitted:', this.formGroup.value);
+      this.dialogRef.close(this.formGroup.value);
     }
   }
 

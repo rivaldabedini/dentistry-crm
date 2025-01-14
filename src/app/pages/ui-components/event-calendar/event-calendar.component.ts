@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
+import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'app-event-calendar',
@@ -27,6 +28,61 @@ export class EventCalendarComponent implements OnInit {
   timeSlots: string[] = [];
 
   weeks: Date[][] = [];
+
+  formConfig = {
+    title: 'Add Appointment',
+    fields: [
+      {
+        name: 'title',
+        label: 'Title',
+        type: 'text',
+        placeholder: 'Enter title appointment',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'patientName',
+        label: 'Patient Name',
+        type: 'text',
+        placeholder: 'Enter patient name',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'dentistName',
+        label: 'Dentist Name',
+        type: 'text',
+        placeholder: 'Enter dentist name',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'appointmentDate',
+        label: 'Appointment Date',
+        type: 'date',
+        placeholder: 'Select appointment date',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'appointmentStartTime',
+        label: 'Appointment Time',
+        type: 'time',
+        placeholder: 'Select start time',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'appointmentEndTime',
+        label: 'Appointment Time',
+        type: 'time',
+        placeholder: 'Select end time',
+        class: 'col-lg-6',
+      },
+      {
+        name: 'comments',
+        label: 'Additional Comments',
+        type: 'textarea',
+        placeholder: 'Enter your comments here',
+        class: 'col-lg-12',
+      },
+    ],
+  };
 
   public CalendarView = CalendarView;
 
@@ -238,27 +294,26 @@ export class EventCalendarComponent implements OnInit {
     const minutes = new Date().getMinutes();
     const h = hour < 10 ? `0${hour}` : hour;
     const m = minutes < 10 ? `0${minutes}` : minutes;
-    // const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-    //   width: '500px',
-    //   panelClass: 'dialog-container',
-    //   data: {
-    //     date: this.selectedDate,
-    //     title: '',
-    //     startTime: this.selectedStartTime || `${h}:${m}`,
-    //     endTime: this.selectedStartTime || `${h}:${m}`,
-    //   },
-    // });
 
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result) {
-    //     this.addAppointment(
-    //       result.date,
-    //       result.title,
-    //       result.startTime,
-    //       result.endTime
-    //     );
-    //   }
-    // });
+    const dialogRef = this.dialog.open(DynamicFormComponent, {
+      width: '500px',
+      panelClass: 'dialog-container',
+      data: {
+        formConfig: this.formConfig,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result) {
+        this.addAppointment(
+          result.appointmentDate,
+          result.title,
+          result.appointmentStartTime,
+          result.appointmentEndTime
+        );
+      }
+    dialogRef.close();
+    });
   }
 
   getAppointmentsForDate(day: Date, timeSlots: string[]) {

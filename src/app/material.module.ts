@@ -41,6 +41,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker'; // Import the timepicker module
 
 @NgModule({
   declarations: [],
@@ -80,7 +81,8 @@ import { MatTableModule } from '@angular/material/table';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMatTimepickerModule
   ],
 })
 export class MaterialModule {}
